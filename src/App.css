@@ -1,0 +1,13 @@
+.arena {
+    display: flex;
+    gap: 2rem;
+    padding: 1rem;
+}
+
+.pokemon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
