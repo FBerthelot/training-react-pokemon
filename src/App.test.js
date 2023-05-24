@@ -1,8 +1,19 @@
 import { render, screen } from '@testing-library/react';
-import App from './App';
+import {App} from './App';
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
-});
+describe('Pokemon Arena', () => {
+  it('should display Pickachu with full HP when battle is not started', () => {
+    render(<App />);
+
+
+    expect(screen.getByTestId('attacker')).toHaveTextContent('PV: 100 / 100');
+  })
+
+  it('should display Salamèche with full HP when battle is not started', () => {
+    render(<App />);
+
+
+    expect(screen.getByTestId('defender')).toHaveTextContent('PV: 100 / 100');
+  })
+})
+
