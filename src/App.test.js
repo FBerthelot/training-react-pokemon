@@ -12,7 +12,6 @@ describe('Pokemon Arena', () => {
   it('should display Salamèche with full HP when battle is not started', () => {
     render(<App />);
 
-
     expect(screen.getByTestId('defender')).toHaveTextContent('PV: 100 / 100');
   })
 })
