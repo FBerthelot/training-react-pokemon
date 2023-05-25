@@ -1,0 +1,10 @@
+.matchmaking_form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.matchmaking_button {
+    width: 10rem;
+}
