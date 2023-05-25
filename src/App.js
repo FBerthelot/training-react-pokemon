@@ -17,12 +17,17 @@ export function App() {
       totalPv: 100
     },
     nextToAttack: 'attacker',
-    winner: null
+    winner: null,
+    isPaused: true
   })
 
   useEffect(() => {
     const interval = setInterval(() => {
       setBattleState((currentBattleState) => {
+        if(currentBattleState.isPaused) {
+          return currentBattleState;
+        } 
+
         if(currentBattleState.winner) {
           clearInterval(interval);
           return currentBattleState;
@@ -48,6 +53,12 @@ export function App() {
     };
   }, [])
 
+  const togglePlayPause = () => {
+    setBattleState((battleState) => ({
+      ...battleState,
+      isPaused: !battleState.isPaused
+    }))
+  }
 
 
   return (
@@ -60,6 +71,7 @@ export function App() {
             <Pokemon pokemon={battleState.defender} testid="defender" />
           </div>
         </section>
+        <button type="button" onClick={togglePlayPause}>{battleState.isPaused ? 'play' : 'pause'}</button>
         <section>
             Log incoming.
         </section>
