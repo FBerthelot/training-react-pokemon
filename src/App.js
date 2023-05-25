@@ -1,42 +1,20 @@
-import { useQuery } from '@tanstack/react-query';
-import './App.css'
-import { Arena } from './arena/arena';
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { PokemonSelectorScreen } from "./matchmaking/pokemonSelector.screen";
+import { BattleScreen } from "./arena/battle.screen";
 
-const API_URL = 'https://pokeapi.co/api/v2/pokemon/'
-const pokemonFetcher =   (id) => async () => {
-  const response = await fetch(`${API_URL}${id}`)
-
-  if(!response.ok) {
-    throw new Error('Response was not OK');
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <PokemonSelectorScreen/>,
+  },
+  {
+    path: '/battle/:attacker/:defender',
+    element: <BattleScreen />
   }
-
-  return response.json()
-}
+]);
 
 export function App() {
-  const pikaQuery = useQuery({
-    queryKey: ['pikachu'],
-    queryFn: pokemonFetcher('pikachu')
-  })
-  const salaQuery = useQuery({
-    queryKey: ['salameche'],
-    queryFn: pokemonFetcher('charmander')
-  })
-
-  if(salaQuery.isLoading || pikaQuery.isLoading) {
-    return 'loading...';
-  }
-
-  if(salaQuery.error || pikaQuery.error) {
-    return 'Erreur avec la pokéAPI'
-  }
-
-  return (
-      <main>
-        <h1>Bataille de pokémon!</h1>
-        <Arena attacker={pikaQuery.data} defender={salaQuery.data} />
-      </main>
-  );
+  return <RouterProvider router={router}></RouterProvider>;
 }
 
 
