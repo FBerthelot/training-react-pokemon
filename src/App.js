@@ -1,20 +1,54 @@
+import { useEffect, useState } from 'react';
 import './App.css'
 import {Pokemon} from './pokemons/pokemon.component'
 
 export function App() {
-  const attacker = {
-    name: "pikachu",
-    img: "http://pokemon.lux.frachet.berthelot.io/api/img/back/pikachu.gif",
-    currentPv: 100,
-    totalPv: 100
-  };
+  const [battleState, setBattleState] = useState({
+    attacker: {
+      name: "pikachu",
+      img: "http://pokemon.lux.frachet.berthelot.io/api/img/back/pikachu.gif",
+      currentPv: 100,
+      totalPv: 100
+    },
+    defender: {
+      name: "salamèche",
+      img: "http://pokemon.lux.frachet.berthelot.io/api/img/charmander.gif",
+      currentPv: 100,
+      totalPv: 100
+    },
+    nextToAttack: 'attacker',
+    winner: null
+  })
 
-  const defender = {
-    name: "salamèche",
-    img: "http://pokemon.lux.frachet.berthelot.io/api/img/charmander.gif",
-    currentPv: 100,
-    totalPv: 100
-  };
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setBattleState((currentBattleState) => {
+        if(currentBattleState.winner) {
+          clearInterval(interval);
+          return currentBattleState;
+        }
+
+        const pokemonWhoLoseHpThisRound = currentBattleState.nextToAttack === 'attacker' ? 'defender': 'attacker'
+
+        const newPv =  Math.max(currentBattleState[pokemonWhoLoseHpThisRound].currentPv - 10, 0);
+        return {
+          ...currentBattleState,
+          [pokemonWhoLoseHpThisRound]: {
+            ...currentBattleState[pokemonWhoLoseHpThisRound],
+            currentPv: newPv
+          },
+          nextToAttack: pokemonWhoLoseHpThisRound,
+          winner: newPv === 0 ? currentBattleState.nextToAttack : null
+        }
+      })
+    }, 1000)
+
+    return () => {
+      clearInterval(interval)
+    };
+  }, [])
+
+
 
   return (
       <main>
@@ -22,12 +56,12 @@ export function App() {
         <section>
           <h2>L'arène</h2>
           <div className="arena">
-            <Pokemon pokemon={attacker} testid="attacker" />
-            <Pokemon pokemon={defender} testid="defender" />
+            <Pokemon pokemon={battleState.attacker} testid="attacker" />
+            <Pokemon pokemon={battleState.defender} testid="defender" />
           </div>
         </section>
         <section>
-            Battle is not started yet.
+            Log incoming.
         </section>
       </main>
   );
