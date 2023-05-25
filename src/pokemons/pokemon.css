@@ -4,3 +4,7 @@
     align-items: center;
     justify-content: center;
 }
+
+.pokemon--dead {
+    opacity: 0.3;
+}

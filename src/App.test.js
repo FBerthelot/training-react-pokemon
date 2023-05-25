@@ -47,6 +47,17 @@ describe('Pokemon Arena', () => {
   
       expect(screen.getByTestId('attacker')).toHaveTextContent('PV: 100 / 100');
     })
+
+    it('should display salamèche loosed some HP', () => {
+      render(<App />);
+  
+      fireEvent.click(screen.getByRole('button'))
+      act(() => {
+        jest.advanceTimersByTime(1000);
+      })
+  
+      expect(screen.getByTestId('logs')).toHaveTextContent('pikachu attack and salamèche loosed 10HP');
+    })
   })
 
   describe('when 10s of the fight ellapsed', () => {
@@ -95,6 +106,17 @@ describe('Pokemon Arena', () => {
   
       expect(screen.getByTestId('attacker')).toHaveTextContent('PV: 10 / 100');
     })
+
+    it('should display pickachu won when the battle is over', () => {
+      render(<App />);
+  
+      fireEvent.click(screen.getByRole('button'))
+      act(() => {
+        jest.advanceTimersByTime(20000);
+      })
+  
+      expect(screen.getByTestId('logs')).toHaveTextContent('pikachu won');
+    })
   })
 
 
@@ -133,6 +155,5 @@ describe('Pokemon Arena', () => {
       expect(screen.getByTestId('attacker')).toHaveTextContent('PV: 100 / 100');
     })
   })
-
 })
 

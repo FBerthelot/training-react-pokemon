@@ -18,7 +18,8 @@ export function App() {
     },
     nextToAttack: 'attacker',
     winner: null,
-    isPaused: true
+    isPaused: true,
+    logs: []
   })
 
   useEffect(() => {
@@ -30,7 +31,16 @@ export function App() {
 
         if(currentBattleState.winner) {
           clearInterval(interval);
-          return currentBattleState;
+          return {
+            ...currentBattleState,
+            logs: [
+              ...currentBattleState.logs,
+              {
+                id: currentBattleState.logs.length,
+                message: `${currentBattleState[currentBattleState.winner].name} won.`
+              }
+            ]
+          };
         }
 
         const pokemonWhoLoseHpThisRound = currentBattleState.nextToAttack === 'attacker' ? 'defender': 'attacker'
@@ -43,7 +53,14 @@ export function App() {
             currentPv: newPv
           },
           nextToAttack: pokemonWhoLoseHpThisRound,
-          winner: newPv === 0 ? currentBattleState.nextToAttack : null
+          winner: newPv === 0 ? currentBattleState.nextToAttack : null,
+          logs: [
+            ...currentBattleState.logs,
+            {
+              id: currentBattleState.logs.length,
+              message: `${currentBattleState[currentBattleState.nextToAttack].name} attack and ${currentBattleState[pokemonWhoLoseHpThisRound].name} loosed 10HP.`
+            }
+          ]
         }
       })
     }, 1000)
@@ -72,8 +89,14 @@ export function App() {
           </div>
         </section>
         <button type="button" onClick={togglePlayPause}>{battleState.isPaused ? 'play' : 'pause'}</button>
-        <section>
-            Log incoming.
+        <section data-testid="logs">
+          <ul>
+            {
+              battleState.logs.map((log) => {
+                return <li key={log.id}>{log.message}</li>
+              })
+            }
+            </ul>
         </section>
       </main>
   );
