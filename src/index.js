@@ -4,12 +4,18 @@ import './index.css';
 import {App} from './App';
 import reportWebVitals from './reportWebVitals';
 import { ErrorBoundary } from './ErrorBoundary';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+const queryClient = new QueryClient()
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <ErrorBoundary>
-      <App />
+      <QueryClientProvider client={queryClient}>
+        <App />
+      </QueryClientProvider>
     </ErrorBoundary>
   </React.StrictMode>
 );
